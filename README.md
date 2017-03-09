@@ -1,7 +1,7 @@
 Political Dynamics
 ==============================
 
-A differential equations perspective on American National Election Studies (ANES) over time.
+A differential equations perspective on American National Election Studies (ANES) over time.
 
 ---
 
