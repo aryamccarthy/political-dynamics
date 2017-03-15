@@ -21,7 +21,7 @@ def plot_explained_variance(pca):
     })
 
 
-def biplot(pca, dat, title='', components=(0, 1)):
+def biplot(pca, dat, title='', components=(0, 1), color=None):
     pc1, pc2 = components
 
     # 0,1 denote PC1 and PC2; change values for other PCs
@@ -43,6 +43,7 @@ def biplot(pca, dat, title='', components=(0, 1)):
                 x=[0, xvector[i] * max(xs)],
                 y=[0, yvector[i] * max(ys)],
                 mode='lines+text',
+                marker=dict(color=color),
                 text=['', txt],
                 name=txt,
             ))
@@ -54,7 +55,7 @@ def biplot(pca, dat, title='', components=(0, 1)):
     })
 
 
-def triplot(pca, dat, title='', components=(0, 1, 2)):
+def triplot(pca, dat, title='', components=(0, 1, 2), color=None):
     pc1, pc2, pc3 = components
 
     # 0,1 denote PC1 and PC2; change values for other PCs
@@ -69,7 +70,7 @@ def triplot(pca, dat, title='', components=(0, 1, 2)):
 
     annotations = [
         Scatter3d(x=xs, y=ys, z=zs, mode='markers',
-                  marker=dict(size=2, opacity=0.2),
+                  marker=dict(size=2, opacity=0.2, color=color),
                   name='cumulative explained variance')
     ]
     for i in range(len(xvector)):
