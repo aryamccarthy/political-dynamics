@@ -47,7 +47,8 @@ def biplot(pca, dat, title='', components=(0, 1), color=None):
     annotations = [
         Scatter(x=xs, y=ys, mode='markers',
                 marker=dict(size=10, opacity=0.2, color=color),
-                name='cumulative explained variance')
+                name='scatter',
+                text=list(dat.index.values.tolist()))
     ]
     for i in range(len(xvector)):
         txt = list(dat.columns.values)[i]
@@ -84,7 +85,7 @@ def triplot(pca, dat, title='', components=(0, 1, 2), color=None):
     annotations = [
         Scatter3d(x=xs, y=ys, z=zs, mode='markers',
                   marker=dict(size=2, opacity=0.2, color=color),
-                  name='cumulative explained variance')
+                  name='scatter')
     ]
     for i in range(len(xvector)):
         txt = list(dat.columns.values)[i]
