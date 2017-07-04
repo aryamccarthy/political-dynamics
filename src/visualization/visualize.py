@@ -1,5 +1,6 @@
 import numpy as np
-from plotly.graph_objs import Scatter, Layout, XAxis, YAxis, Bar, Scatter3d, Line
+from plotly.graph_objs import (Figure, Scatter, Layout, XAxis, YAxis, Bar,
+                               Scatter3d, Line)
 import plotly.offline as py
 
 py.init_notebook_mode()  # run at the start of every notebook
@@ -9,12 +10,12 @@ def plot_explained_variance(pca):
     explained_var = pca.explained_variance_ratio_
     cum_var_exp = np.cumsum(explained_var)
 
-    py.iplot({
-        "data": [
+    py.iplot(Figure(
+        data=[
             Bar(y=explained_var, name='individual explained variance'),
             Scatter(y=cum_var_exp, name='cumulative explained variance'),
         ],
-        "layout":
+        layout=\
             Layout(xaxis=XAxis(title='Principal components'),
                    yaxis=YAxis(title='Explained variance ratio'),
                    shapes=[{
@@ -30,7 +31,7 @@ def plot_explained_variance(pca):
                                 'dash': 'dash',
                             },}]
                    )
-    })
+    ))
 
 
 def biplot(pca, dat, title='', components=(0, 1), color=None):
