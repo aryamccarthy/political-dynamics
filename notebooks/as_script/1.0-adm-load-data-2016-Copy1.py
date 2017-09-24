@@ -1,13 +1,13 @@
 
 # coding: utf-8
 
-# # Load and preprocess 2012 data
+# # Load and preprocess 2016 data
 # 
 # We will, over time, look over other years. Our current goal is to explore the features of a single year.
 # 
 # ---
 
-# In[12]:
+# In[1]:
 
 get_ipython().magic('pylab --no-import-all inline')
 import pandas as pd
@@ -19,34 +19,34 @@ import pandas as pd
 # 
 # If this fails, be sure that you've saved your own data in the prescribed location, then retry.
 
-# In[13]:
+# In[2]:
 
-file = "../data/interim/2012data.dta"
+file = "../data/interim/2016data.dta"
 df_rawest = pd.read_stata(file)
 
 
-# In[14]:
+# In[3]:
 
 good_columns = [#'campfin_limcorp', # "Should gov be able to limit corporate contributions"
-    'pid_x',  # Your own party identification
+    'V161158x',  # Your own party identification
     
-    'abortpre_4point',  # Abortion
-    'trad_adjust',  # Moral Relativism
-    'trad_lifestyle',  # "Newer" lifetyles
-    'trad_tolerant',  # Moral tolerance
-    'trad_famval',  # Traditional Families
-    'gayrt_discstd_x',  # Gay Job Discrimination
-    'gayrt_milstd_x',  # Gay Military Service
+    'V161232',  # Abortion
+    'V162207',  # Moral Relativism
+    'V162208',  # "Newer" lifetyles
+    'V162209',  # Moral tolerance
+    'V162210',  # Traditional Families
+    'V161229x',  # Gay Job Discrimination
+    'V161230',  # Gay Adoption
     
-    'inspre_self',  # National health insurance
-    'guarpr_self',  # Guaranteed Job
-    'spsrvpr_ssself',  # Services/Spending
-    
-    'aa_work_x',  # Affirmative Action  ( Should this be aapost_hire_x? )
-    'resent_workway', 
-    'resent_slavery', 
-    'resent_deserve',
-    'resent_try',
+    'V161184',  # National health insurance
+    'V161189',  # Guaranteed Job
+    'V161178',  # Services/Spending
+
+    'V162238x',  
+    'V162211',  
+    'V162212',
+    'V162213',
+    'V162214',
 ]
 
 df_raw = df_rawest[good_columns]
@@ -55,7 +55,7 @@ df_raw = df_rawest[good_columns]
 # ## Clean the data
 # ---
 
-# In[15]:
+# In[4]:
 
 def convert_to_int(s):
     """Turn ANES data entry into an integer.
@@ -90,23 +90,8 @@ def liblow_conshigh(x):
     """Reorder questions where the liberal response is low."""
     return -x
 
-def dem_edu_special_treatment(x):
-    """Eliminate negative numbers and {95. Other}"""
-    return np.nan if x == 95 or x < 0 else x
-
 df = df_raw.applymap(convert_to_int)
 df = df.applymap(negative_to_nan)
-
-df.abortpre_4point = df.abortpre_4point.apply(lambda x: np.nan if x not in {1, 2, 3, 4} else -x)
-
-df.loc[:, 'trad_lifestyle'] = df.trad_lifestyle.apply(lambda x: -x)  # 1: moral relativism, 5: no relativism
-df.loc[:, 'trad_famval'] = df.trad_famval.apply(lambda x: -x)  # Tolerance. 1: tolerance, 7: not
-
-df.loc[:, 'spsrvpr_ssself'] = df.spsrvpr_ssself.apply(lambda x: -x)
-
-df.loc[:, 'resent_workway'] = df.resent_workway.apply(lambda x: -x)
-df.loc[:, 'resent_try'] = df.resent_try.apply(lambda x: -x)
-
 
 df.rename(inplace=True, columns=dict(zip(
     good_columns,
@@ -118,7 +103,7 @@ df.rename(inplace=True, columns=dict(zip(
     "MoralTolerance",
     "TraditionalFamilies",
     "GayJobDiscrimination",
-    "GayMilitaryService",
+    "GayAdoption",
 
     "NationalHealthInsurance",
     "StandardOfLiving",
@@ -132,35 +117,56 @@ df.rename(inplace=True, columns=dict(zip(
     ]
 )))
 
+df.PartyID = df.PartyID.apply(lambda x: np.nan if x == 99 else x)
+df.Abortion = df.Abortion.apply(lambda x: np.nan if x not in {1, 2, 3, 4} else -x)
 
-# In[16]:
+df.loc[:, 'ServicesVsSpending'] = df.ServicesVsSpending.apply(lambda x: x if x != 99 else np.nan)
+df.loc[:, 'NationalHealthInsurance'] = df.NationalHealthInsurance.apply(lambda x: x if x != 99 else np.nan)
+df.loc[:, 'StandardOfLiving'] = df.StandardOfLiving.apply(lambda x: x if x != 99 else np.nan)
+
+
+df.loc[:, 'NewerLifestyles'] = df.NewerLifestyles.apply(lambda x: -x)  # Tolerance. 1: tolerance, 7: not
+df.loc[:, 'TraditionalFamilies'] = df.TraditionalFamilies.apply(lambda x: -x)  # 1: moral relativism, 5: no relativism
+
+df.loc[:, 'ServicesVsSpending'] = df.ServicesVsSpending.apply(lambda x: -x)  # Gov't insurance?
+
+df.loc[:, 'RacialTryHarder'] = df.RacialTryHarder.apply(lambda x: -x)  # Racial support
+df.loc[:, 'RacialWorkWayUp'] = df.RacialWorkWayUp.apply(lambda x: -x)  # Systemic factors?
+
+
+# In[5]:
 
 print("Variables now available: df")
 
 
-# In[17]:
+# In[6]:
 
-df_rawest.pid_x.value_counts()
+df_rawest.V161158x.value_counts()
 
 
-# In[18]:
+# In[7]:
 
 df.PartyID.value_counts()
 
 
-# In[19]:
+# In[8]:
 
 df.describe()
 
 
-# In[20]:
+# In[9]:
 
 df.head()
 
 
-# In[21]:
+# In[10]:
 
-df.to_csv("../data/processed/2012.csv")
+df.to_csv("../data/processed/2016.csv")
+
+
+# In[13]:
+
+df_rawest.V160102.to_csv("../data/processed/2016_weights.csv")
 
 
 # In[ ]:
