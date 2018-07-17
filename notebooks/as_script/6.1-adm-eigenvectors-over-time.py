@@ -3,8 +3,8 @@
 
 # In[1]:
 
-get_ipython().magic('pylab --no-import-all inline')
-
+import matplotlib.pyplot as plt
+import numpy as np
 
 # # Eigenvectors and biplots over time
 
@@ -17,18 +17,18 @@ import pandas as pd
 import seaborn as sns
 
 # Load the "autoreload" extension
-get_ipython().magic('load_ext autoreload')
+# get_ipython().magic('load_ext autoreload')
 
 # always reload modules marked with "%aimport"
-get_ipython().magic('autoreload 1')
+# get_ipython().magic('autoreload 1')
 
 # add the 'src' directory as one where we can import modules
-src_dir = os.path.join(os.pardir, 'src')
+src_dir = os.path.join(os.pardir, os.pardir, 'src')
 sys.path.append(src_dir)
 
 # import my method from the source code
-get_ipython().magic('aimport features.build_features')
-get_ipython().magic('aimport visualization.visualize')
+import features.build_features
+import visualization.visualize
 from visualization.visualize import biplot, plot_explained_variance, triplot
 
 
@@ -40,7 +40,7 @@ YEARS = [1976, 1988, 1992, 2000, 2004, 2008, 2012, 2016]
 
 # In[4]:
 
-DATA_FRAMES_RAW = [pd.read_csv("../data/processed/{year}.csv".format(year=year), index_col=0) for year in YEARS]
+DATA_FRAMES_RAW = [pd.read_csv("../../data/processed/{year}.csv".format(year=year), index_col=0) for year in YEARS]
 
 
 # In[5]:
@@ -116,6 +116,8 @@ from itertools import zip_longest
 plt.stackplot(YEARS[1:], list(zip_longest(*evrs, fillvalue=0)), labels=list(range(len(evrs[0]))))
 # Skip YEARS[0] because there are 6 questions instead of 15-16, so it's not representative.
 plt.legend()
+plt.savefig("../../reports/figures/stackplot.pdf")
+plt.close()
 
 
 # In[12]:
@@ -137,10 +139,13 @@ sns.set_palette("Set1", 10, .75)
 
 from sklearn.preprocessing import MinMaxScaler
 
-for year, df in zip(YEARS[1:], DATA_FRAMES[1:]):
-    df = pd.DataFrame(MinMaxScaler().fit_transform(df.dropna()), columns=df.columns)
-    df_econ = (df.NationalHealthInsurance + df.StandardOfLiving + df.ServicesVsSpending) / 3
-    sns.kdeplot(df_econ, label = str(year))
+# for year, df in zip(YEARS[1:], DATA_FRAMES[1:]):
+#     df = pd.DataFrame(MinMaxScaler().fit_transform(df.dropna()), columns=df.columns)
+#     df_econ = (df.NationalHealthInsurance + df.StandardOfLiving + df.ServicesVsSpending) / 3
+#     sns.kdeplot(df_econ, label = str(year))
+#     plt.savefig("../../reports/figures/Economic.pdf")
+#     plt.close()
+
 
 
 # In[ ]:

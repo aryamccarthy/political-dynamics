@@ -3,7 +3,8 @@
 
 # In[1]:
 
-get_ipython().magic('pylab --no-import-all inline')
+import numpy as np
+import matplotlib.pyplot as plt
 
 
 # # Clustering analysis
@@ -21,24 +22,26 @@ import pandas as pd
 import seaborn as sns
 
 # Load the "autoreload" extension
-get_ipython().magic('load_ext autoreload')
+# get_ipython().magic('load_ext autoreload')
 
 # always reload modules marked with "%aimport"
-get_ipython().magic('autoreload 1')
+# get_ipython().magic('autoreload 1')
 
 # add the 'src' directory as one where we can import modules
-src_dir = os.path.join(os.pardir, 'src')
+src_dir = os.path.join(os.pardir, os.pardir, 'src')
 sys.path.append(src_dir)
 
 # import my method from the source code
-get_ipython().magic('aimport features.build_features')
-get_ipython().magic('aimport visualization.visualize')
+import features.build_features
+import visualization.visualize
 from visualization.visualize import biplot, plot_explained_variance, triplot
 
 
+YEAR = 1976
+
 # In[3]:
 
-df = pd.read_csv("../data/processed/1976.csv", index_col=0)
+df = pd.read_csv("../../data/processed/{}.csv".format(YEAR), index_col=0)
 
 
 # ---
@@ -49,17 +52,24 @@ df = pd.read_csv("../data/processed/1976.csv", index_col=0)
 
 # Spearman is recommended for ordinal data.
 correlations = df.corr(method='spearman')
+plt.figure()
 sns.heatmap(correlations,
            square=True);
+# plt.tight_layout()
+plt.savefig(f"../../reports/figures/correlations_{YEAR}.pdf", bbox_inches='tight')
 
 
 # Note that if we were to scale the data, the correlation matrix would be unchanged.
 
 # In[5]:
 
+plt.figure()
 cg = sns.clustermap(correlations, square=True)
 plt.setp(cg.ax_heatmap.yaxis.get_majorticklabels(),
         rotation=0);  # Fix rotation of y-labels.
+# plt.tight_layout()
+# plt.tight_layout()
+plt.savefig(f"../../reports/figures/heatmap_{YEAR}.pdf", bbox_inches='tight')
 
 
 # There were no strong clusters.
@@ -98,7 +108,7 @@ _scaled = scaler_pipeline.transform(df)
 
 # In[7]:
 
-plot_explained_variance(pca)
+plot_explained_variance(pca, title=f"Explained variance ({YEAR}, impute)")
 
 
 # ### Biplot
@@ -108,12 +118,12 @@ plot_explained_variance(pca)
 # In[8]:
 
 data_scaled = pd.DataFrame(_scaled, columns=df.columns)
-triplot(pca, data_scaled, title='ANES 1976 Biplot', color=data_scaled.PartyID)
+triplot(pca, data_scaled, title=f'ANES {YEAR} Biplot', color=data_scaled.PartyID)
 
 
 # In[9]:
 
-biplot(pca, data_scaled, title='ANES 1976 Biplot', color=data_scaled.PartyID)
+biplot(pca, data_scaled, title=f"Biplot ({YEAR}, impute)", color=data_scaled.PartyID)
 
 
 # In[10]:
@@ -147,12 +157,12 @@ data_scaled = pd.DataFrame(_scaled, columns=df.columns)
 
 # In[12]:
 
-biplot(pca, data_scaled, title='ANES 1976 Biplot', color=data_scaled.PartyID)
+biplot(pca, data_scaled, title=f'Biplot ({YEAR}, drop null)', color=data_scaled.PartyID)
 
 
-# In[13]:
+# In[14]:
 
-plot_explained_variance(pca)
+plot_explained_variance(pca, title=f"Explained variance ({YEAR}, drop null)")
 
 
 # In[ ]:

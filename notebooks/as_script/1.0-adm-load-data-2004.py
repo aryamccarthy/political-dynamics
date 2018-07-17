@@ -9,7 +9,8 @@
 
 # In[1]:
 
-get_ipython().magic('pylab --no-import-all inline')
+import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 
 
@@ -21,7 +22,7 @@ import pandas as pd
 
 # In[2]:
 
-file = "../data/interim/2004data.dta"
+file = "../../data/interim/2004data.dta"
 df_rawest = pd.read_stata(file)
 
 
@@ -161,12 +162,12 @@ df.describe()
 
 # In[10]:
 
-df.to_csv("../data/processed/2004.csv")
+df.to_csv("../../data/processed/2004.csv")
 
 
 # In[14]:
 
-df_rawest.V040102.to_csv("../data/processed/2004_weights.csv")
+df_rawest.V040102.to_csv("../../data/processed/2004_weights.csv")
 
 
 # In[ ]:

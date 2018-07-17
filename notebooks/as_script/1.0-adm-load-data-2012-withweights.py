@@ -9,7 +9,8 @@
 
 # In[1]:
 
-get_ipython().magic('pylab --no-import-all inline')
+import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 
 
@@ -21,38 +22,37 @@ import pandas as pd
 
 # In[2]:
 
-file = "../data/interim/2008data.dta"
+file = "../../data/interim/2012data.dta"
 df_rawest = pd.read_stata(file)
 
 
-# In[3]:
+# In[7]:
 
-any(df_rawest.V080102.isnull())
+df_rawest.weight_full.isnull()
 
 
-# In[4]:
+# In[8]:
 
 good_columns = [#'campfin_limcorp', # "Should gov be able to limit corporate contributions"
-    'V083098x',  # Your own party identification
+    'pid_x',  # Your own party identification
     
-    'V085086',  # Abortion
-    'V085139',  # Moral Relativism
-    'V085140',  # "Newer" lifetyles
-    'V085141',  # Moral tolerance
-    'V085142',  # Traditional Families
-    'V083211x',  # Gay Job Discrimination
-    'V083213',  # Gay Adoption
-    'V083212x',  # Gay Military Service
+    'abortpre_4point',  # Abortion
+    'trad_adjust',  # Moral Relativism
+    'trad_lifestyle',  # "Newer" lifetyles
+    'trad_tolerant',  # Moral tolerance
+    'trad_famval',  # Traditional Families
+    'gayrt_discstd_x',  # Gay Job Discrimination
+    'gayrt_milstd_x',  # Gay Military Service
     
-    'V083119',  # National health insurance
-    'V083128',  # Guaranteed Job
-    'V083105',  # Services/Spending
+    'inspre_self',  # National health insurance
+    'guarpr_self',  # Guaranteed Job
+    'spsrvpr_ssself',  # Services/Spending
     
-#    'V085157',  # Affirmative Action  ( Should this be aapost_hire_x? )
-    'V085143', 
-    'V085144', 
-    'V085145',
-    'V085146',
+    'aa_work_x',  # Affirmative Action  ( Should this be aapost_hire_x? )
+    'resent_workway', 
+    'resent_slavery', 
+    'resent_deserve',
+    'resent_try',
 ]
 
 df_raw = df_rawest[good_columns]
@@ -61,7 +61,7 @@ df_raw = df_rawest[good_columns]
 # ## Clean the data
 # ---
 
-# In[5]:
+# In[9]:
 
 def convert_to_int(s):
     """Turn ANES data entry into an integer.
@@ -103,6 +103,16 @@ def dem_edu_special_treatment(x):
 df = df_raw.applymap(convert_to_int)
 df = df.applymap(negative_to_nan)
 
+df.abortpre_4point = df.abortpre_4point.apply(lambda x: np.nan if x not in {1, 2, 3, 4} else -x)
+
+df.loc[:, 'trad_lifestyle'] = df.trad_lifestyle.apply(lambda x: -x)  # 1: moral relativism, 5: no relativism
+df.loc[:, 'trad_famval'] = df.trad_famval.apply(lambda x: -x)  # Tolerance. 1: tolerance, 7: not
+
+df.loc[:, 'spsrvpr_ssself'] = df.spsrvpr_ssself.apply(lambda x: -x)
+
+df.loc[:, 'resent_workway'] = df.resent_workway.apply(lambda x: -x)
+df.loc[:, 'resent_try'] = df.resent_try.apply(lambda x: -x)
+
 
 df.rename(inplace=True, columns=dict(zip(
     good_columns,
@@ -114,69 +124,57 @@ df.rename(inplace=True, columns=dict(zip(
     "MoralTolerance",
     "TraditionalFamilies",
     "GayJobDiscrimination",
-    "GayAdoption",
     "GayMilitaryService",
 
     "NationalHealthInsurance",
     "StandardOfLiving",
     "ServicesVsSpending",
 
-#    "AffirmativeAction",
+    "AffirmativeAction",
     "RacialWorkWayUp",
     "RacialGenerational",
     "RacialDeserve",
     "RacialTryHarder",
-
     ]
 )))
-
-df.Abortion = df.Abortion.apply(lambda x: np.nan if x not in {1, 2, 3, 4} else -x)
-
-df.loc[:, 'NewerLifestyles'] = df.NewerLifestyles.apply(lambda x: -x)  # Tolerance. 1: tolerance, 7: not
-df.loc[:, 'TraditionalFamilies'] = df.TraditionalFamilies.apply(lambda x: -x)  # 1: moral relativism, 5: no relativism
-
-df.loc[:, 'ServicesVsSpending'] = df.ServicesVsSpending.apply(lambda x: -x)  # Gov't insurance?
-
-df.loc[:, 'RacialTryHarder'] = df.RacialTryHarder.apply(lambda x: -x)  # Racial support
-df.loc[:, 'RacialWorkWayUp'] = df.RacialWorkWayUp.apply(lambda x: -x)  # Systemic factors?
-
-
-# In[6]:
-
-print("Variables now available: df")
-
-
-# In[7]:
-
-df_rawest.V083098x.value_counts()
-
-
-# In[8]:
-
-df.PartyID.value_counts()
-
-
-# In[9]:
-
-df.describe()
 
 
 # In[10]:
 
-df.head()
+print("Variables now available: df")
 
 
 # In[11]:
 
-df.to_csv("../data/processed/2008.csv")
+df_rawest.pid_x.value_counts()
+
+
+# In[12]:
+
+df.PartyID.value_counts()
+
+
+# In[13]:
+
+df.describe()
+
+
+# In[14]:
+
+df.head()
+
+
+# In[21]:
+
+df.to_csv("../../data/processed/2012.csv")
 
 
 # In[15]:
 
-df_rawest.V080102.replace("0. No Post-election interview", 0).to_csv("../data/processed/2008_weights.csv")
+df_rawest.weight_full.to_csv("../../data/processed/2012_weights.csv")
 
 
-# In[14]:
+# In[16]:
 
 df_rawest.shape
 

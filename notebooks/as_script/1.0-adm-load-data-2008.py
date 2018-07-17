@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# # Load and preprocess 2008 data
+# # Load and preprocess 2012 data
 # 
 # We will, over time, look over other years. Our current goal is to explore the features of a single year.
 # 
@@ -9,7 +9,8 @@
 
 # In[1]:
 
-get_ipython().magic('pylab --no-import-all inline')
+import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 
 
@@ -21,13 +22,13 @@ import pandas as pd
 
 # In[2]:
 
-file = "../data/interim/2008data.dta"
+file = "../../data/interim/2008data.dta"
 df_rawest = pd.read_stata(file)
 
 
 # In[3]:
 
-df_rawest.V085157.value_counts()
+any(df_rawest.V080102.isnull())
 
 
 # In[4]:
@@ -168,7 +169,17 @@ df.head()
 
 # In[11]:
 
-df.to_csv("../data/processed/2008.csv")
+df.to_csv("../../data/processed/2008.csv")
+
+
+# In[15]:
+
+df_rawest.V080102.replace("0. No Post-election interview", 0).to_csv("../../data/processed/2008_weights.csv")
+
+
+# In[14]:
+
+df_rawest.shape
 
 
 # In[ ]:

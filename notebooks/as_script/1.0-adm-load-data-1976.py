@@ -3,7 +3,8 @@
 
 # In[1]:
 
-get_ipython().magic('pylab --no-import-all inline')
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 # # Load and preprocess 1976 data
@@ -25,7 +26,7 @@ import pandas as pd
 
 # In[3]:
 
-file = "../data/interim/1976data.dta"  
+file = "../../data/interim/1976data.dta"  
 # Matt Wilson converted the older Stata file to the one we use.
 df_rawest = pd.read_stata(file)
 
@@ -148,7 +149,7 @@ df.PartyID.value_counts()
 
 # In[12]:
 
-df.to_csv("../data/processed/1976.csv")
+df.to_csv("../../data/processed/1976.csv")
 
 
 # In[13]:

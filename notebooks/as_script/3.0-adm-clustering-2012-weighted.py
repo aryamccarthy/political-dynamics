@@ -3,8 +3,8 @@
 
 # In[1]:
 
-get_ipython().magic('pylab --no-import-all inline')
-
+import matplotlib.pyplot as plt
+import numpy as np
 
 # # Clustering analysis
 # 
@@ -20,19 +20,14 @@ import sys
 import pandas as pd
 import seaborn as sns
 
-# Load the "autoreload" extension
-get_ipython().magic('load_ext autoreload')
-
-# always reload modules marked with "%aimport"
-get_ipython().magic('autoreload 1')
 
 # add the 'src' directory as one where we can import modules
-src_dir = os.path.join(os.pardir, 'src')
+src_dir = os.path.join(os.pardir, os.pardir, 'src')
 sys.path.append(src_dir)
 
 # import my method from the source code
-get_ipython().magic('aimport features.build_features')
-get_ipython().magic('aimport visualization.visualize')
+import features.build_features
+import visualization.visualize
 from visualization.visualize import biplot, plot_explained_variance, triplot
 
 
