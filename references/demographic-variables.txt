@@ -1,62 +1,0 @@
-1988: Church Attendance: built from VAR 880527, VAR880530, and VAR880531 Education: VAR880422 Urban/Rural: VAR880020
-Gender: VAR880413
-Age: VAR880417
-Income: VAR880520
-Race: VAR880412
-
-1992:
-Church Attendance: built from VAR923286, VAR923828, and VAR923829
-Education: VAR923908 Urban/Rural: VAR923065 Gender: VAR924201
-Age: VAR923903
-Income: VAR924104
-Race: VAR924202
-
-1996:
-Church Attendance: built from VAR960576, VAR960578, and VAR960579
-Education: VAR960610
-Urban/Rural: VAR960120
-Gender: VAR960066
-Age: VAR960605
-Income: VAR960701
-Race: VAR960067
-
-2000:
-Church Attendance: built from VAR 000877, VAR 000879, and VAR 000880
-Education: VAR 000913
-Urban/Rural: VAR 000095
-Gender: VAR 001029
-Age: VAR 000908
-Income: VAR 000994
-Race: VAR 001006a
-
-2004:
-Church Attendance: built from V043223, V043224, and V043225
-Education: V043254
-Urban/Rural: V041213
-Gender: V043411
-Age: V043250
-Income: V043293x
-Race: V043299
-2008:
-Church Attendance: built from V083185, V083186, and V083186a
-Education: built from V083217, V083218A, and V083218B
-Urban/Rural: V082025
-Gender: V083311
-Age: V083215X
-Income: built from V083248 and V083249
-Race: V083251A
-
-2012:
-Church Attendance: built from RELIG_CHURCH, RELIG_CHURCHOFT, and RELIG_CHURCHWK Education: DEM_EDUCR
-Urban/Rural: Apparently not in data set
-Gender: IWROBSPRE_GENDER
-Age: DEM_BIRTHYR
-Income: INC_TOTINC
-Race: DEM_RACEPS
-
-2016:
-Church Attendance: built from V161244, V161245, and V161245a
-Education: V161270 Urban/Rural: Apparently not in data set
-Gender: V161342
-Age: V161267
-Income: V161361x Race: V161310

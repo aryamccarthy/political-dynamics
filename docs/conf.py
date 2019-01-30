@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Political Dynamics documentation build configuration file, created by
+# political-dynamics documentation build configuration file, created by
 # sphinx-quickstart.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -41,7 +41,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Political Dynamics'
+project = u'political-dynamics'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -185,7 +185,7 @@ latex_elements = {
 latex_documents = [
     ('index',
      'political-dynamics.tex',
-     u'Political Dynamics Documentation',
+     u'political-dynamics Documentation',
      u"Arya D. McCarthy", 'manual'),
 ]
 
@@ -215,7 +215,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'political-dynamics', u'Political Dynamics Documentation',
+    ('index', 'political-dynamics', u'political-dynamics Documentation',
      [u"Arya D. McCarthy"], 1)
 ]
 
@@ -229,9 +229,9 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    ('index', 'political-dynamics', u'Political Dynamics Documentation',
-     u"Arya D. McCarthy", 'Political Dynamics',
-     'A differential equations perspective on American National Election Studies (ANES) over time.[D[D[D', 'Miscellaneous'),
+    ('index', 'political-dynamics', u'political-dynamics Documentation',
+     u"Arya D. McCarthy", 'political-dynamics',
+     'A differential equations perspective on American National Election Studies (ANES) over time.', 'Miscellaneous'),
 ]
 
 # Documents to append as an appendix to all manuals.
